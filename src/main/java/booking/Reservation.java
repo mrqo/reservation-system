@@ -1,24 +1,46 @@
 package booking;
 
-import java.util.Date;
+import java.time.Instant;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Entity
 public class Reservation implements Comparable<Reservation> {
-    private Integer id;
-    private Date dateFrom;
-    private Date dateTo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    @Setter
+    private Long id;
 
-    public Reservation(Integer id, Date dateFrom, Date dateTo) {
-        this.id = id;
+    @Getter
+    @Setter
+    private Instant dateFrom;
+    
+    @Getter
+    @Setter
+    private Instant dateTo;
+
+    @OneToMany(mappedBy = "reservation")
+    private Set<Endpoint> endpoints;
+
+    public Reservation() {
+
+    }
+    
+    public Reservation(Instant dateFrom, Instant dateTo) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
     }
 
-    public boolean intersects(Date from, Date to) {
+    public boolean intersects(Instant from, Instant to) {
         return this.dateFrom.compareTo(from) <= 0 && this.dateTo.compareTo(from) >= 0
             || this.dateFrom.compareTo(to) <= 0 && this.dateTo.compareTo(to) >= 0
             || this.dateFrom.compareTo(from) == 1 && this.dateTo.compareTo(to) == -1;

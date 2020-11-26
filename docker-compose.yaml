@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  booking-db:
+    image: 'bitnami/mariadb:latest'
+    ports: 
+      - '3400:3306'
+    volumes:
+      - /var/lib/bitnami/mariadb
+    environment: 
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_REPLICATION_MODE=master
+      - MARIADB_USER=user
+      - MARIADB_PASSWORD=user
+      - MARIADB_DATABASE=booking-db

@@ -3,8 +3,9 @@ version: '3'
 services:
   booking-db:
     image: 'bitnami/mariadb:latest'
+    container_name: bookingdb
     ports: 
-      - '3400:3306'
+      - 3400:3306
     volumes:
       - /var/lib/bitnami/mariadb
     environment: 
@@ -13,3 +14,20 @@ services:
       - MARIADB_USER=user
       - MARIADB_PASSWORD=user
       - MARIADB_DATABASE=booking-db
+  
+  booking-rabbitmq:
+    image: 'rabbitmq:3.8.9-management-alpine'
+    container_name: bookingrmq
+    ports:
+        - 4369:4369
+        - 5672:5672
+        - 15672:15672
+        - 25672:25672
+    volumes:
+      - ./.docker/rabbitmq/etc/:/etc/rabbitmq/
+      - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
+      - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}

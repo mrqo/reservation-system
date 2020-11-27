@@ -1,4 +1,4 @@
-package booking;
+package com.dotissoft.booking;
 
 import org.springframework.stereotype.Component;
 
